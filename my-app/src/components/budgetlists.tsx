@@ -113,19 +113,19 @@ const BudgetList: React.FC<BudgetListProps> = ({ budgets }: any) => {
     // window.location.reload();
   };
 
-  const getRemainingAmount = (budget: any) => {
+  // const getRemainingAmount = (budget: any) => {
     
-    const historyForBudget = history.filter(item => item.budgetId === budget._id);
-    const totalAddedAmount = historyForBudget.reduce((total, item) => {
-      if (item.action === 'Added') {
-        return total + item.amount;
-      } else if (item.action === 'Removed') {
-        return total - item.amount;
-      }
-      return total;
-    }, 0);
-    return budget.amount - totalAddedAmount;
-  };
+  //   const historyForBudget = history.filter(item => item.budgetId === budget._id);
+  //   const totalAddedAmount = historyForBudget.reduce((total, item) => {
+  //     if (item.action === 'Added') {
+  //       return total + item.amount;
+  //     } else if (item.action === 'Removed') {
+  //       return total - item.amount;
+  //     }
+  //     return total;
+  //   }, 0);
+  //   return budget.amount - totalAddedAmount;
+  // };
 
   const handleEditBudget = async (itemid:any) => {
     setEditItemId(itemid);
