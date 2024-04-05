@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -36,13 +37,14 @@ import BudgetList from './budgetlists'
 interface Budget {
   id: number;
   name: string;
-  amountLimit: string;
+  amount: string;
+  left:string;
 }
 
 const Budgetlist = () => {
   const [budgets, setBudgets] = useState<Budget[]>([]);
   const [showForm, setShowForm] = useState(false);
-  const [newBudget, setNewBudget] = useState({ name: '', amountLimit: '' });
+  const [newBudget, setNewBudget] = useState({ name: '', amount: '' , left: ''});
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredBudgets = budgets.filter(budget =>
@@ -53,13 +55,32 @@ const Budgetlist = () => {
     setShowForm(true);
   };
 
-  const handleFormSubmit = () => {
-    // Logic to handle form submission (e.g., send data to backend, update state)
-    // After successful submission, update budgets state and hide the form
+  const handleFormSubmit = async (e:any) => {
+    e.preventDefault();
+    const res = await axios.post("/api/newbudgetlist", newBudget );
+    console.log(res);
     setBudgets([...budgets, { ...newBudget, id: Date.now() }]);
     setShowForm(false);
-    setNewBudget({ name: '', amountLimit: '' });
+    setNewBudget({ name: '', amount: '' , left: ''});
   };
+
+  useEffect(() => {
+    const loadList = async () => {
+      const username = "rishabh";
+      try {
+        const res = await axios.post("/api/allbudgetlists", { username });
+        console.log(res.data.data);
+        const lists = res.data.data;
+        setBudgets(lists);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+  
+    loadList();
+  }, []);
+  
+  
 
   return (
         <div className="flex flex-col">
@@ -195,9 +216,9 @@ const Budgetlist = () => {
                     Amount Limit:
                     <Input
                       type="number"
-                      value={newBudget.amountLimit}
+                      value={newBudget.amount}
                       placeholder="Set Amount ...."
-                      onChange={e => setNewBudget({ ...newBudget, amountLimit: e.target.value })}
+                      onChange={e => setNewBudget({ ...newBudget, amount: e.target.value })}
                       className="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3"
                     />
                   </label>

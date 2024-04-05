@@ -5,7 +5,7 @@ import Budgetlist from '@/components/budgetlist'
 import MonthlyExpense from '@/components/monthlyexpense'
 
 const homePage = () => {
-  const [showBudgetList, setShowBudgetList] = useState(false);
+  const [showBudgetList, setShowBudgetList] = useState(true);
   const [showMonthlyExpense, setShowMonthlyExpense] = useState(false);
 
   const handleBudgetListClick = () => {
